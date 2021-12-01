@@ -2,10 +2,11 @@ import { Bot, session } from "grammy";
 import * as dotenv from "dotenv"; dotenv.config();
 import * as colors from "colors"; colors.enable();
 
-import { MyContext as Context, MyContext, SessionData } from "./Context";
-import { axiosInstance } from "./axios";
+import { MyContext, SessionData } from "./Context";
+
 import { setPasswordQuestion, register } from "./composers/register";
 import { loginQuestion, login } from "./composers/login";
+import { shop, shopMenuMiddleware } from "./composers/shop";
 
 declare global {
     namespace NodeJS {
@@ -26,12 +27,17 @@ bot.use(
     }),
 );
 
+// Stateless questions
 bot.use(setPasswordQuestion.middleware());
 bot.use(loginQuestion.middleware());
+
+// Menus
+bot.use(shopMenuMiddleware.middleware());
 
 // Composers
 bot.use(register);
 bot.use(login);
+bot.use(shop);
 
 bot.command(["start", "help"], (ctx) => {
     ctx.reply(`Cześć!
@@ -39,13 +45,6 @@ Aby skorzystać z naszego sklepu musisz dokonać rejestracji.
 Rejestrując się akcpetujesz naszą politykę prywatności - /policy
 Możesz zarejestrować się komendą /register`);
 });
-
-/* bot.command("debugShopName", async (ctx) => {
-    axiosInstance.get("/shop/name").then(res => {
-        ctx.reply(res.data);
-    });
-});
- */
 
 console.log("Bot załadowany, startuję!".rainbow);
 

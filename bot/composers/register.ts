@@ -3,6 +3,7 @@ import { Composer } from "grammy";
 import * as bcrypt from "bcrypt";
 
 import { axiosInstance } from "../axios";
+import { MyContext } from "../Context";
 
 export const setPasswordQuestion = new StatelessQuestion("setPassword", async (ctx) => {
     let password = "";
@@ -22,7 +23,7 @@ export const setPasswordQuestion = new StatelessQuestion("setPassword", async (c
     });
 });
 
-export const register = new Composer();
+export const register = new Composer<MyContext>();
 
 register.command("register", (ctx) => {
     return setPasswordQuestion.replyWithMarkdown(ctx, "Wpisz hasło którym będziesz mógł się zalogować. Nie martw się, twoje hasło jest bezpieczne! Automatycznie usunięmy też wiadomość z twoim hasłem, więc lepiej je zapamiętaj!");

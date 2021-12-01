@@ -23,13 +23,13 @@ export const loginQuestion = new StatelessQuestion("loginQuestion", async (ctx: 
     }
 });
 
-export const login = new Composer();
+export const login = new Composer<MyContext>();
 
 login.command("login", (ctx) => {
     return loginQuestion.replyWithMarkdown(ctx, "Wpisz swoje hasło aby się zalogować!")
 });
 
-login.command("auth", async (ctx: any) => {
+login.command("auth", async (ctx) => {
     console.log(ctx.session)
     if(ctx.session.token !== ""){
         let response = await axiosInstance.post("/authtest", {token: ctx.session.token, telegramId: ctx.me.id})

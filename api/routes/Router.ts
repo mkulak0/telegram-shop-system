@@ -64,9 +64,11 @@ export function Router(): express.Router {
         }
     });
 
-    router.get("/product", async (req, res) => {
+    router.get("/product", auth, async (req, res) => {
         res.json(ProductController.all());
     });
+
+    /* DEBUG */
 
     router.post("/authtest", auth, (req, res) => {
         res.json({"code": "login_success"});
