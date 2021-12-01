@@ -1,6 +1,6 @@
 import { StatelessQuestion } from "@grammyjs/stateless-question";
 import { Composer } from "grammy";
-import bcrypt from "bcrypt";
+import * as bcrypt from "bcrypt";
 
 import { axiosInstance } from "../axios";
 

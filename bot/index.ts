@@ -1,6 +1,6 @@
 import { Bot, session } from "grammy";
-import dotenv from "dotenv"; dotenv.config();
-import colors from "colors"; colors.enable();
+import * as dotenv from "dotenv"; dotenv.config();
+import * as colors from "colors"; colors.enable();
 
 import { MyContext as Context, SessionData } from "./Context";
 import { axiosInstance } from "./axios";
