@@ -1,0 +1,25 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grammyjs/stateless-question": "^3.0.1",
+    "@types/axios": "^0.14.0",
+    "@types/bcrypt": "^5.0.0",
+    "axios": "^0.24.0",
+    "bcrypt": "^5.0.1",
+    "colors": "^1.4.0",
+    "dotenv": "^10.0.0",
+    "grammy": "^1.4.2",
+    "grammy-inline-menu": "^7.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.10"
+  }
+}
