@@ -46,6 +46,7 @@ Możesz zarejestrować się komendą /register`);
     });
 });
  */
+
 console.log("Bot załadowany, startuję!".rainbow);
 
 bot.start();

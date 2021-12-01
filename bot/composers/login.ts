@@ -27,4 +27,18 @@ export const login = new Composer();
 
 login.command("login", (ctx) => {
     return loginQuestion.replyWithMarkdown(ctx, "Wpisz swoje hasło aby się zalogować!")
-})
+});
+
+login.command("auth", async (ctx: any) => {
+    console.log(ctx.session)
+    if(ctx.session.token !== ""){
+        let response = await axiosInstance.post("/authtest", {token: ctx.session.token, telegramId: ctx.me.id})
+        if(response.data.code === "login_success"){
+            ctx.reply("Zostałeś poprawnie zalogowany");
+        } else {
+            ctx.reply("Nie jesteś zalogowany poprawnie");
+        }
+    } else {
+        ctx.reply("Brak tokenu sesji. Zaloguj się /login");
+    }
+});
