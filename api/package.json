@@ -9,15 +9,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "better-sqlite3": "^7.4.5",
     "body-parser": "^1.19.0",
     "colors": "^1.4.0",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/better-sqlite3": "^7.4.1",
     "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.6",
     "@types/node": "^16.11.10",
     "nodemon": "^2.0.15",
     "tslint": "^6.1.3",

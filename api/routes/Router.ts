@@ -4,6 +4,12 @@ import bodyParser from "body-parser";
 import { ShopController } from "./Controllers/ShopController";
 import { UserController } from "./Controllers/UserController";
 import { ProductController } from "./Controllers/ProductController";
+import { auth } from "../middlewares/Auth";
+
+interface Message {
+    message: string
+    code: string
+}
 
 export function Router(): express.Router {
     var router = express.Router();
@@ -22,14 +28,28 @@ export function Router(): express.Router {
 
     /* User */
 
-    router.post("/user/create", urlencodedParser, async (req, res) => {
+    router.post("/user/create", async (req, res) => {
+        let msg: Message = {
+            message: "",
+            code: ""
+        };
         console.log("/user/create".blue);
         // console.log(req.body)
         let result = await UserController.register(req.body);
         if(result){
-            res.json("Konto zostało pomyślnie utworzone")
+            msg.code = "account_created";
         } else {
-            res.json("Nie udało się utworzyć konta. Możliwe że na to konto Telegram zostało już założone konto w naszym systemie. Najlepiej skontaktuj się z administratorem.");
+            msg.code = "account_creation_error";
+        }
+        res.json(msg);
+    });
+
+    router.post("/user/login", async (req, res) => {
+        let temp = await UserController.login(req.body);
+        if(temp !== false){
+            res.json({ token: temp });
+        } else {
+            res.json({"code": "login_failed"});
         }
     });
 
@@ -46,6 +66,10 @@ export function Router(): express.Router {
 
     router.get("/product", async (req, res) => {
         res.json(ProductController.all());
+    });
+
+    router.post("/authtest", auth, (req, res) => {
+        res.json({"code": "login_success"});
     });
 
     return router;

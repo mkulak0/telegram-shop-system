@@ -7,7 +7,6 @@ import { axiosInstance } from "../axios";
 export const setPasswordQuestion = new StatelessQuestion("setPassword", async (ctx) => {
     let password = "";
     password += ctx.message!.text;
-    // ctx.editMessageText("Elo elo");
     ctx.api.deleteMessage(ctx.message.chat.id, ctx.message.message_id);
     let obj = {
         telegramId: ctx.from!.id,
@@ -15,7 +14,11 @@ export const setPasswordQuestion = new StatelessQuestion("setPassword", async (c
     }
     await ctx.reply(`Twój zaszyfrowany hash do hasła to ${obj.password} \nPoczekaj na informację z serwera potwierdzającą założenie konta!`);
     axiosInstance.post("user/create", obj).then((res) => {
-        ctx.reply(`Serwer: ${res.data}`);
+        if(res.data.code === "account_created"){
+            ctx.reply("Serwer: Konto utworzone");
+        } else if(res.data.code === "account_creation_error"){
+            ctx.reply("Problem z utworzeniem konta. Skontaktuj się z administratorem!");
+        }
     });
 });
 

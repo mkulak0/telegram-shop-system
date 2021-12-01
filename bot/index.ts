@@ -2,9 +2,10 @@ import { Bot, session } from "grammy";
 import * as dotenv from "dotenv"; dotenv.config();
 import * as colors from "colors"; colors.enable();
 
-import { MyContext as Context, SessionData } from "./Context";
+import { MyContext as Context, MyContext, SessionData } from "./Context";
 import { axiosInstance } from "./axios";
 import { setPasswordQuestion, register } from "./composers/register";
+import { loginQuestion, login } from "./composers/login";
 
 declare global {
     namespace NodeJS {
@@ -14,21 +15,23 @@ declare global {
     }
 }
 
-const bot = new Bot<Context>(process.env.BOT_TOKEN);
+const bot = new Bot<MyContext>(process.env.BOT_TOKEN);
 
 // Middlewares
 bot.use(
     session({
         initial(): SessionData {
-            return { elo: "no elo" };
+            return { token: "" };
         },
     }),
 );
 
 bot.use(setPasswordQuestion.middleware());
+bot.use(loginQuestion.middleware());
 
 // Composers
 bot.use(register);
+bot.use(login);
 
 bot.command(["start", "help"], (ctx) => {
     ctx.reply(`Cześć!
@@ -37,16 +40,12 @@ Rejestrując się akcpetujesz naszą politykę prywatności - /policy
 Możesz zarejestrować się komendą /register`);
 });
 
-bot.command("login", (ctx) => {
-
-});
-
-bot.command("debugShopName", async (ctx) => {
+/* bot.command("debugShopName", async (ctx) => {
     axiosInstance.get("/shop/name").then(res => {
         ctx.reply(res.data);
     });
 });
-
+ */
 console.log("Bot załadowany, startuję!".rainbow);
 
 bot.start();

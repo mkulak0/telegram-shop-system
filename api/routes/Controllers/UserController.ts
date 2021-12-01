@@ -1,9 +1,11 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 import { NewUser } from "../../interfaces/NewUser";
 import { Database } from "../../database/Database";
 
 export class UserController {
     private static async checkIfUserIsRegistered(userId: Number): Promise<Boolean> {
-        console.log(userId)
         let column = Database.getInstance().prepare(`SELECT * from users WHERE telegram_id = ${userId}`).get();
         return typeof column === "undefined" ? false : true
     }
@@ -21,6 +23,22 @@ export class UserController {
             if (this.registerUser(newUser).changes === 1) {
                 return true;
             }
+        }
+    }
+
+    static async login(loginUser: any){
+        let userFromDB = Database.getInstance().prepare(`SELECT * from users WHERE telegram_id = ${loginUser.telegramId}`).get();
+        if(typeof userFromDB !== "undefined"){
+            if(await bcrypt.compare(loginUser.password, userFromDB.password)){
+                const token = jwt.sign({telegramId: userFromDB.telegramId}, process.env.JWT_SECRET, {expiresIn: "24h"});
+                return token;
+            } else {
+                // Wrong
+                return false;
+            }
+        } else {
+            // No user
+            return false;
         }
     }
 }
