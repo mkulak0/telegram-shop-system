@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@grammyjs/menu": "^1.0.2",
     "@grammyjs/stateless-question": "^3.0.1",
     "@types/axios": "^0.14.0",
     "@types/bcrypt": "^5.0.0",

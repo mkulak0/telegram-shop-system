@@ -4,11 +4,12 @@ import { Composer, Middleware } from "grammy";
 
 import { axiosInstance } from "../axios";
 import { MyContext } from "../Context";
+import { checkAuth } from "../functions";
 
 export const loginQuestion = new StatelessQuestion("loginQuestion", async (ctx: MyContext) => {
     let password = "";
     password += ctx.message!.text;
-    ctx.api.deleteMessage(ctx.message.chat.id, ctx.message.message_id);
+    ctx.api.deleteMessage(ctx.message!.chat.id, ctx.message!.message_id);
     let obj = {
         telegramId: ctx.from!.id,
         password: password
@@ -31,14 +32,9 @@ login.command("login", (ctx) => {
 
 login.command("auth", async (ctx) => {
     console.log(ctx.session)
-    if(ctx.session.token !== ""){
-        let response = await axiosInstance.post("/authtest", {token: ctx.session.token, telegramId: ctx.me.id})
-        if(response.data.code === "login_success"){
-            ctx.reply("Zostałeś poprawnie zalogowany");
-        } else {
-            ctx.reply("Nie jesteś zalogowany poprawnie");
-        }
+    if(await checkAuth(ctx)){
+        ctx.reply("Jesteś zalogowany");
     } else {
-        ctx.reply("Brak tokenu sesji. Zaloguj się /login");
+        ctx.reply("Nie jesteś zalogowany - /login");
     }
 });

@@ -6,7 +6,9 @@ import { MyContext, SessionData } from "./Context";
 
 import { setPasswordQuestion, register } from "./composers/register";
 import { loginQuestion, login } from "./composers/login";
-import { shop, shopMenuMiddleware } from "./composers/shop";
+import { shop } from "./composers/shop";
+
+import { menu } from "./composers/shop"
 
 declare global {
     namespace NodeJS {
@@ -32,7 +34,8 @@ bot.use(setPasswordQuestion.middleware());
 bot.use(loginQuestion.middleware());
 
 // Menus
-bot.use(shopMenuMiddleware.middleware());
+// bot.use(shopMenuMiddleware.middleware());
+bot.use(menu);
 
 // Composers
 bot.use(register);

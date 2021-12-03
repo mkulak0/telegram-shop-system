@@ -64,7 +64,7 @@ export function Router(): express.Router {
         }
     });
 
-    router.get("/product", auth, async (req, res) => {
+    router.get("/product", async (req, res) => {
         res.json(ProductController.all());
     });
 
